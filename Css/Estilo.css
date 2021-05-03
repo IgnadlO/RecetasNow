@@ -1,0 +1,109 @@
+body{
+	background-color:white;
+ 	font-family: Raleway, Arial, Helvetica, sans-serif;
+ 	color:black;
+ 		}
+.menu{
+	list-style: none;
+	padding:;
+	background: #FBA919;
+	width:10000%;
+	max-width: 1000px;
+	margin: auto; 
+}
+.menu li a{
+	text-decoration: none;
+	color:black;
+	padding: 20px;
+	display:block;
+	margin: 0 7rem;
+}
+
+.menu li{
+	display: inline-block;
+	text-align: center;
+
+
+}
+.menu li a:hover{
+	background:orange;
+}
+
+ #container{ 
+ 	width: 1100px;
+ 	margin: 0px auto;
+ 	border: 1px solid #484D4A;
+ 	
+ 	color:black;
+ 			} 
+ 	header{ 
+ 		background: #484D4A;
+ 		color:black;
+ 		} 
+ 	
+ 	
+ 	 .clearfix{ 
+ 	 	clear:both;
+ 		 } 
+ 	 #content{ 
+ 			
+ 			 } 
+.principal{ 
+ 			width:1040px;
+ 			height:495px;
+ 			margin:auto;
+ 			display:block;
+ 		 } 
+.tu-placar-virtual{
+	margin: 30px;
+
+		} 
+
+.modelo-1{
+	width: 300px;
+	margin:45px 45px;
+	height:350px ;
+		} 
+
+.modelo-2{
+	width:300px;
+	margin:20px 10px;
+	height:400px ;
+		} 
+ .modelo-3{
+	width: 300px;
+	margin:35px;
+
+		} 
+
+.placard-info{
+	margin:10px 70px;
+
+		} 
+
+.quienes-somos{
+	margin:15px 500px;
+	} 
+
+.indumentaria{
+	float:left;
+	margin: 10px 30px;
+	}
+
+.contactanos{
+	text-align: right;
+	}
+
+.num{
+	text-align: right;
+	}
+
+.indumentaria-2{
+	float: left;
+	margin:1px 150px;
+	}
+
+.contactanos-2{
+	text-align: right;
+	margin: 10px 10px;
+	}
