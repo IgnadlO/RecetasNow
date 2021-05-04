@@ -11,7 +11,7 @@
 			<span class="icon-menu"></span>
 			<nav class="nav">
 			<ul class="menu">
-				<li class="menu__item"><a class="menu__link" href="Index.html">Cancelar</a></li>
+				<li class="menu__item"><a class="menu__link" href="index.php">Cancelar</a></li>
 			</ul>
 			</nav>
 		</div>
@@ -49,24 +49,27 @@
 </form>
 </div>
 <script type="text/javascript">
+
+    do{
+        var num1 = parseInt(prompt("numero 1"), 10);
+        var num2 = parseInt(prompt("numero 2"), 10);
+        let operacion = prompt("operacion");
+
+        operatoria = {
+            sumar: function(){
+                resultado = num1 + num2;
+                alert(resultado);
+            }
+        }
+        operatoria["sumar()"];
+
+
+    } while(con = prompt("desea continuar? (s o n)") == "s")
+
 	function sumar(id, tipo){
         var lista = document.getElementById(id + "Clase");
         i = lista.getElementsByTagName('input').length;
         lista.insertAdjacentHTML("beforeend",'<input type="text" id="'+ id + (i - 2) +'" name="'+ id + (i - 2) +'" size="640" class="input2" placeholder="'+ tipo + ' ' + (i - 1) +'" required="">');
-    }
-
-    function borrar(id){
-        var lista = document.getElementById(id + "Clase");
-        i = lista.getElementsByTagName('input').length;
-        if(i > 3){
-        input = document.getElementById(id + (i - 3));
-        padre = input.parentNode;
-        padre.removeChild(input);
-    	}
-    	else{
-    		input = document.getElementById(id + "0");
-    		input.value = null;
-    	}
     }
 
     function borrar(id){

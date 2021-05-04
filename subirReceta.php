@@ -1,9 +1,9 @@
 <?php
 
-$servername = "192.168.1.58";
+$servername = "localhost";
 $username = "root";
 $password = "";
-$database = "recetasNow";
+$database = "RecetasNow";
 
 $enlace = mysqli_connect($servername, $username,$password, $database);
 
@@ -23,7 +23,7 @@ $dura = $_POST['dura'];
 $ingr = $_POST['ingr'];
 $proc = $_POST['proc'];
 
-$consulta = "INSERT INTO prendas (nombre, descripcion, duracion, ingrediente, proceso) VALUES ('".$nombre ."' , '" .$desc . "','".$dura ."','".$ingr ."' , '" .$proc . "')";
+$consulta = "INSERT INTO recetas (nombre, descripcion, duracion, ingrediente, proceso) VALUES ('".$nombre ."' , '" .$desc . "','".$dura ."','".$ingr ."' , '" .$proc . "')";
 
 
 $resultado = mysqli_query($enlace,$consulta);
@@ -31,14 +31,13 @@ mysqli_close($enlace);
 
 if($resultado){
     echo '<script language="javascript">
-    alert("La informacion se ha cargado en el servidor correctamente");
-    window.location="index.html";
+    window.location="index.php";
     </script>';
 }
 else{
     echo '<script language="javascript">
     	alert("No se ha subido su prenda. Por favor, intentelo más tarde.");
-    	window.location="index.html";
+    	window.location="index.php";
         </script>';
 }
 
