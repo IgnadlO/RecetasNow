@@ -15,11 +15,15 @@ if ($conexion == false ) {
 
    if($_POST)
       {
+        $link = $_POST['linkForm'];
+        $subLink = explode("/", $link);
+        $con = count($subLink);        
          $sql = "UPDATE recetas SET nombre = '".$_POST['nombreForm']."',
                         descripcion = '".$_POST['descForm']."',
                         duracion = '".$_POST['duraForm']."',
                         ingrediente = '".$_POST['ingrForm']."',
-                        proceso = '".$_POST['procForm']."'
+                        proceso = '".$_POST['procForm']."',
+                        link = '".$subLink[$con - 1]."'
                         WHERE ID = ".$_POST['idForm'].";"; 
          $result = mysqli_query($conexion, $sql); 
       }
@@ -34,6 +38,7 @@ if ($conexion == false ) {
       $dura = $row['duracion'];
       $ingr = $row['ingrediente'];
       $proc = $row['proceso'];
+      $link = $row['link'];
       break;
     }
   }
@@ -121,8 +126,19 @@ if ($conexion == false ) {
         <?php } ?>
  		   </section>
     </div>
+    <div id="videoYou">
+    <h1>Video Youtube</h1>
+    <iframe width="896" height="504" src="https://www.youtube.com/embed/<?php echo $link ?>" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+    </div>
   </div>
   <script type="text/javascript">
+
+  if ("<?php echo $link ?>" == ""){
+        let video = document.getElementById("videoYou");
+        let padre = video.parentNode;
+        padre.removeChild(video);
+  }
+
 
   function crearImagen(){
      var cajaImagen = document.getElementById("cajaImagen");
@@ -130,7 +146,6 @@ if ($conexion == false ) {
         cajaImagen.insertAdjacentHTML("beforeend",'<form method="POST" id="Formulario" action="subirImagen.php" enctype="multipart/form-data"><input type="hidden" name="id" value="<?php echo $nReceta ?>"><div id="cuadroImagen"></div><div id="contenedor_imagen"><input type="file" name="imagen" id="imagen" onchange="validarImagen(this);" required multiple><a id="texto_imagen">Elegir Imagen</a></div><div id="botones"></div></form>');
      }
   }
-
 
   function validarImagen(obj){
     var uploadFile = obj.files[0];
@@ -188,7 +203,7 @@ function previsualizar(obj){
 function editar(){
   var cajaBotones = document.getElementById("editor");
      if (cajaBotones.getElementsByTagName('input').length == 0){
-        cajaBotones.insertAdjacentHTML("beforeend", `<article class="article" style="padding-left: 10px;"><h3>Editor</h3></article><form method="POST" id="Formulario" action=""><h1>Caracteristicas</h1><div class="contenedor" id="cajaEditor"><input type="hidden" name="idForm" value="<?php echo $nReceta ?>"><div class="Ingreso"><input type="text" id="nombre" value="<?php echo $nombre ?>" name="nombreForm" maxlength="32" class="input" placeholder="Nombre" required=""> </div><div class="Ingreso"><input type="text" id="desc" name="descForm" value="<?php echo $desc ?>" class="input" placeholder="Descripcion" rows="2" maxlength="128" required=""></div><div class="Ingreso"><input type="text" id="dura" name="duraForm" size="16" value="<?php echo $dura ?>" class="input2" placeholder="Duracion" required=""> </div><div class="Ingreso" id="ingrClase"><input type="button" value="+" id="bIngr" onclick="sumar('ingr','Ingrediente')" class="Mas" ><input type="button" value="-" onclick="borrar('ingr')" class="Mas" ><br/><?php for ($i = 0; $i < count($sepIngr); $i++) { ?><input type="text" id="ingr<?php echo $i ?>" name="ingrForm" value="<?php echo $sepIngr[$i] ?>" size="160" class="input2" placeholder="Ingredientes" required=""><?php } ?></div><div class="Ingreso" id="procClase"><input type="button" value="+" onclick="sumar('proc','Proceso')" class="Mas" ><input type="button" value="-" onclick="borrar('proc')" class="Mas" ><br/><?php for ($i = 0; $i < count($sepProc); $i++) { ?><input type="text" id="proc<?php echo $i ?>" name="procForm" value="<?php echo $sepProc[$i] ?>" size="640" class="input2" placeholder="Proceso" required=""><?php } ?></div><br><br><input type="button" value="Subir" onclick="subir()" class="Boton" ><br/></div></form>`);
+        cajaBotones.insertAdjacentHTML("beforeend", `<article class="article" style="padding-left: 10px;"><h3>Editor</h3></article><form method="POST" id="Formulario" action=""><h1>Caracteristicas</h1><div class="contenedor" id="cajaEditor"><input type="hidden" name="idForm" value="<?php echo $nReceta ?>"><div class="Ingreso"><input type="text" id="nombre" value="<?php echo $nombre ?>" name="nombreForm" maxlength="32" class="input" placeholder="Nombre" required=""> </div><div class="Ingreso"><input type="text" id="desc" name="descForm" value="<?php echo $desc ?>" class="input" placeholder="Descripcion" rows="2" maxlength="128" required=""></div><div class="Ingreso"><input type="text" id="dura" name="duraForm" size="16" value="<?php echo $dura ?>" class="input" placeholder="Duracion" required=""> </div></div><div class="Ingreso"><input type="text" id="link" name="linkForm" size="16" value="<?php echo $link ?>" class="input2" placeholder="Link de Youtube (opcional)"> </div><div class="Ingreso" id="ingrClase"><input type="button" value="+" id="bIngr" onclick="sumar('ingr','Ingrediente')" class="Mas" ><input type="button" value="-" onclick="borrar('ingr')" class="Mas" ><br/><?php for ($i = 0; $i < count($sepIngr); $i++) { ?><input type="text" id="ingr<?php echo $i ?>" name="ingrForm" value="<?php echo $sepIngr[$i] ?>" size="160" class="input2" placeholder="Ingredientes" required=""><?php } ?></div><div class="Ingreso" id="procClase"><input type="button" value="+" onclick="sumar('proc','Proceso')" class="Mas" ><input type="button" value="-" onclick="borrar('proc')" class="Mas" ><br/><?php for ($i = 0; $i < count($sepProc); $i++) { ?><input type="text" id="proc<?php echo $i ?>" name="procForm" value="<?php echo $sepProc[$i] ?>" size="640" class="input2" placeholder="Proceso" required=""><?php } ?></div><br><br><input type="button" value="Subir" onclick="subir()" class="Boton" ><br/></div></form>`);
         }
     }
   function sumar(id, tipo){

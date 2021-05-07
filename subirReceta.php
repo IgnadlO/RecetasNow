@@ -22,8 +22,11 @@ $desc = $_POST['desc'];
 $dura = $_POST['dura'];
 $ingr = $_POST['ingr'];
 $proc = $_POST['proc'];
+$link = $_POST['link'];
+$subLink = explode("/", $link);
+$con = count($subLink);
 
-$consulta = "INSERT INTO recetas (nombre, descripcion, duracion, ingrediente, proceso) VALUES ('".$nombre ."' , '" .$desc . "','".$dura ."','".$ingr ."' , '" .$proc . "')";
+$consulta = "INSERT INTO recetas (nombre, descripcion, duracion, ingrediente, proceso, link) VALUES ('".$nombre ."' , '" .$desc . "','".$dura ."','".$ingr ."' , '" .$proc . "', '" .$subLink[$con - 1] . "')";
 
 
 $resultado = mysqli_query($enlace,$consulta);
