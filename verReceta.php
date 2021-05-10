@@ -108,9 +108,7 @@ if ($conexion == false ) {
       <div class="contenedor-2" id="cajaImagen">
       </div>
 		 <div class="clearfix">
-      <h1>Imagenes</h1>
-		  <section id="content">
-        <?php
+      <?php
           $array = array();
           $sql = "SELECT * FROM fotos";
           mysqli_set_charset($conexion, "utf8"); 
@@ -120,6 +118,12 @@ if ($conexion == false ) {
                 array_push ($array , $row['direccion']);
             }
           }
+           if (count($array) >= 1) {
+             echo "<h1>Imagenes</h1>";
+           }
+          ?>
+		  <section id="content">
+        <?php
           foreach ($array as $rutasa) {
         ?>
  			  <img class="imagenComida" src="<?php echo $rutasa ?>" alt="Receta01">
@@ -203,9 +207,10 @@ function previsualizar(obj){
 function editar(){
   var cajaBotones = document.getElementById("editor");
      if (cajaBotones.getElementsByTagName('input').length == 0){
-        cajaBotones.insertAdjacentHTML("beforeend", `<article class="article" style="padding-left: 10px;"><h3>Editor</h3></article><form method="POST" id="Formulario" action=""><h1>Caracteristicas</h1><div class="contenedor" id="cajaEditor"><input type="hidden" name="idForm" value="<?php echo $nReceta ?>"><div class="Ingreso"><input type="text" id="nombre" value="<?php echo $nombre ?>" name="nombreForm" maxlength="32" class="input" placeholder="Nombre" required=""> </div><div class="Ingreso"><input type="text" id="desc" name="descForm" value="<?php echo $desc ?>" class="input" placeholder="Descripcion" rows="2" maxlength="128" required=""></div><div class="Ingreso"><input type="text" id="dura" name="duraForm" size="16" value="<?php echo $dura ?>" class="input" placeholder="Duracion" required=""> </div></div><div class="Ingreso"><input type="text" id="link" name="linkForm" size="16" value="<?php echo $link ?>" class="input2" placeholder="Link de Youtube (opcional)"> </div><div class="Ingreso" id="ingrClase"><input type="button" value="+" id="bIngr" onclick="sumar('ingr','Ingrediente')" class="Mas" ><input type="button" value="-" onclick="borrar('ingr')" class="Mas" ><br/><?php for ($i = 0; $i < count($sepIngr); $i++) { ?><input type="text" id="ingr<?php echo $i ?>" name="ingrForm" value="<?php echo $sepIngr[$i] ?>" size="160" class="input2" placeholder="Ingredientes" required=""><?php } ?></div><div class="Ingreso" id="procClase"><input type="button" value="+" onclick="sumar('proc','Proceso')" class="Mas" ><input type="button" value="-" onclick="borrar('proc')" class="Mas" ><br/><?php for ($i = 0; $i < count($sepProc); $i++) { ?><input type="text" id="proc<?php echo $i ?>" name="procForm" value="<?php echo $sepProc[$i] ?>" size="640" class="input2" placeholder="Proceso" required=""><?php } ?></div><br><br><input type="button" value="Subir" onclick="subir()" class="Boton" ><br/></div></form>`);
+        cajaBotones.insertAdjacentHTML("beforeend", `<article class="article" style="padding-left: 10px;"><h3>Editor</h3></article><form method="POST" id="Formulario" action=""><h1>Caracteristicas</h1><div class="contenedor" id="cajaEditor"><input type="hidden" name="idForm" value="<?php echo $nReceta ?>"><div class="Ingreso"><input type="text" id="nombre" value="<?php echo $nombre ?>" name="nombreForm" maxlength="32" class="input" placeholder="Nombre" required=""> </div><div class="Ingreso"><input type="text" id="desc" name="descForm" value="<?php echo $desc ?>" class="input" placeholder="Descripcion" rows="2" maxlength="128" required=""></div><div class="Ingreso"><input type="text" id="dura" name="duraForm" size="16" value="<?php echo $dura ?>" class="input" placeholder="Duracion" required=""></div><div class="Ingreso"><input type="text" id="link" name="linkForm" size="16" value="<?php echo $link ?>" class="input2" placeholder="Link de Youtube (opcional)"> </div><div class="Ingreso" id="ingrClase"><input type="button" value="+" id="bIngr" onclick="sumar('ingr','Ingrediente')" class="Mas" ><input type="button" value="-" onclick="borrar('ingr')" class="Mas" ><br/><?php for ($i = 0; $i < count($sepIngr); $i++) { ?><input type="text" id="ingr<?php echo $i ?>" name="ingrForm" value="<?php echo $sepIngr[$i] ?>" size="160" class="input2" placeholder="Ingredientes" required=""><?php } ?></div><div class="Ingreso" id="procClase"><input type="button" value="+" onclick="sumar('proc','Proceso')" class="Mas" ><input type="button" value="-" onclick="borrar('proc')" class="Mas" ><br/><?php for ($i = 0; $i < count($sepProc); $i++) { ?><input type="text" id="proc<?php echo $i ?>" name="procForm" value="<?php echo $sepProc[$i] ?>" size="640" class="input2" placeholder="Proceso" required=""><?php } ?></div><br><br><input type="button" value="Subir" onclick="subir()" class="Boton" ><br/></div></div></form>`);
         }
     }
+
   function sumar(id, tipo){
         var lista = document.getElementById(id + "Clase");
         i = lista.getElementsByTagName('input').length;
@@ -220,18 +225,16 @@ function editar(){
         padre = input.parentNode;
         padre.removeChild(input);
       }
-      else{
-        input = document.getElementById(id + "0");
-        input.value = null;
-      }
+      else
+        document.getElementById(id + "0").value = "";
     }
 
     function subir(){
       tipo = ["ingr","proc"]
       for (var n = 0; n <= 1; n++){
         var lista = document.getElementById(tipo[n] + "Clase");
-            largo = lista.getElementsByTagName('input').length;
-            ingrediente = document.getElementById(tipo[n] + "0").value;
+        largo = lista.getElementsByTagName('input').length;
+        ingrediente = document.getElementById(tipo[n] + "0").value;
         for (var i = 1; i <= (largo - 3); i++) {
           if(document.getElementById(tipo[n] + i).value != ""){
           ingrediente = ingrediente + "_-_" + document.getElementById(tipo[n] + i).value;
@@ -244,12 +247,8 @@ function editar(){
         }
         document.getElementById(tipo[n] + "0").value = ingrediente;
       }
-      
-      
+            
       document.forms["Formulario"].submit()
-      for (var i = 0; i <= 1; i++){
-        document.getElementById(tipo[i] + "0").value = null;
-      }
   }
 </script>
  </body>

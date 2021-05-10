@@ -64,14 +64,14 @@
         lista.insertAdjacentHTML("beforeend",'<input type="text" id="'+ id + (i - 2) +'" name="'+ id + (i - 2) +'" size="640" class="input2" placeholder="'+ tipo + ' ' + (i - 1) +'" required="">');
     }
 
-    function borrar(id){
+     function borrar(id){
         let i = listar(id);
         if (i > 3){
         let input = document.getElementById(id + (i - 3));
         let padre = input.parentNode;
         padre.removeChild(input);
-    	}
-    	else document.getElementById(id + "0").value = null;
+        }
+        else document.getElementById(id + "0").value = null;
     }
 
     function subir(){
