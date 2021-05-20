@@ -1,5 +1,5 @@
 body{
-	background: white;
+	background: #7F9966;
 }
 /*----------------Estilos de Header----------------*/
 .header{
@@ -48,18 +48,18 @@ body{
 /*----------------Estilos del Cuerpo----------------*/
 
 #gran_contenedor{
-	width: 700px;
+	width: 550px;
     padding: 5px;
     margin: auto;
     margin-top: 75px;
     background: white;
-    /*border: 1px solid #000000;*/
+    border: 1px solid #222;
 }
 
 .Contenedor{
     width: 500px;
     padding: 5px;
-    margin: auto;
+    margin: 0px auto;
 }
 
 /*----------------Estilos de Imagen----------------
@@ -171,4 +171,3 @@ p{
     margin-top: 150px;
     border-radius: 2%;
 }
-

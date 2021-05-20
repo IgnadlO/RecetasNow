@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="es">
+ <head>
+ 	<meta charset="utf-8">
+ 	<title><%= data.nombre %></title>
+ 	<meta name="Description" content="Mi contenedor personal de recetas">
+ 	<link rel="stylesheet" href="Estilo.css" media="all"/>
+	<link href="https://fonts.googleapis.com/css2?family=Raleway:wght@500&display=swap" rel="stylesheet"> 		
+ </head>
+ <body>
+  <header class="header">
+    <h1 class="titulo"><%= data.nombre %></h1>
+    <div class="cabeza">  
+      <nav class="nav" id="nav-1">
+      <ul class="menu">
+        <li class="menu__item"><a class="menu__link" href="/">Inicio</a></li>
+      </ul>
+      </nav>
+      <nav class="nav" id="nav-2">
+      <ul class="menu">
+        <li class="menu__item"><a class="menu__link" onclick="crearImagen()">Nueva Foto</a></li>
+        <li class="menu__item"><a class="menu__link" onclick="editar()">Editar</a></li>
+      </ul>
+      </nav>
+    </div>
+  </header>
+
+  <div class="contenedor" id="contVer">
+ 			<article class="article" style="padding-left: 10px;">
+ 					<h3><%= data.descripcion %></h3>
+ 			</article>
+      <div class="contenedorDatos">
+       <div class="receta-2" id="rec01">
+        <h1>Ingredientes</h1>
+        <ul>
+        <%
+        let ingredientes = data.ingrediente;
+        var sepIngr = ingredientes.split("_-_");
+        for (let i = 0; i < sepIngr.length; i++) { 
+        %>
+        <li><%= sepIngr[i] %></li>
+      <% } %>
+      </ul>
+      </div>
+       <div class="receta-2" id="rec02">
+        <h1>Proceso</h1>
+        <ul>
+        <%
+        let proceso = data.proceso;
+        var sepProc = proceso.split("_-_");
+        for (let i = 0; i < sepProc.length; i++) { 
+        %>
+        <li><%= sepProc[i] %></li>
+      <% } %>
+      </ul>
+      </div>
+      </div>
+
+      <div class="editor" id="editor">
+      </div>	
+
+      <div class="contenedor-2" id="cajaImagen">
+      </div>
+		 <div class="clearfix">
+      <%
+      let fotos = [];
+        for (let n = 0; n < dataFoto.length; n++){ 
+          if (data.id == dataFoto[n].idReceta) {
+              fotos.push(dataFoto[n].direccion);
+          }
+        }
+          if (fotos.length >= 1) {
+      %>
+        <h1>Imagenes</h1>
+        <% } %>
+		  <section id="content">
+        <%
+          for(foto of fotos) {
+        %>
+ 			  <img class="imagenComida" src="<%= foto %>" alt="Receta01">
+        <% } %>
+ 		   </section>
+    </div>
+    <div id="videoYou">
+    <h1>Video Youtube</h1>
+    <iframe width="896" height="504" src="https://www.youtube.com/embed/<%= data.link %>" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+    </div>
+  </div>
+  <script type="text/javascript">
+
+  if ("<%= data.link %>" == ""){
+        let video = document.getElementById("videoYou");
+        let padre = video.parentNode;
+        padre.removeChild(video);
+  }
+
+
+  function crearImagen(){
+     var cajaImagen = document.getElementById("cajaImagen");
+     if (cajaImagen.getElementsByTagName('div').length == 0){
+        cajaImagen.insertAdjacentHTML("beforeend",'<form method="POST" id="Formulario" action="/file<%= data.id %>/imagenes" enctype="multipart/form-data"><input type="hidden" name="idReceta" value="<%= data.id %>"><div id="cuadroImagen"></div><div id="contenedor_imagen"><input type="file" name="imagen" id="imagen" onchange="validarImagen(this);" required multiple><a id="texto_imagen">Elegir Imagen</a></div><div id="botones"></div></form>');
+     }
+  }
+
+  function validarImagen(obj){
+    var uploadFile = obj.files[0];
+
+    if (!window.FileReader) {
+        alert('El navegador no soporta la lectura de archivos');
+        document.getElementById("imagen").value = "";
+        return;
+    }
+
+    if (!(/\.(jpg|png|gif)$/i).test(uploadFile.name)) {
+        alert('El archivo a adjuntar no es una imagen');
+         document.getElementById("imagen").value = "";
+    }
+    else {
+        var img = new Image();
+        img.onload = function () {
+            if (uploadFile.size > 5000000)
+            {
+                alert('El peso de la imagen no puede exceder los 5mb')
+                document.getElementById("imagen").value = "";
+            }
+            else {
+               previsualizar(obj);            
+            }
+        };
+        img.src = URL.createObjectURL(uploadFile);
+    }                 
+}
+
+function previsualizar(obj){
+  let reader = new FileReader();
+  reader.readAsDataURL(obj.files[0]);
+  reader.onload = function(){
+    let preview = document.getElementById('cuadroImagen'),
+            image = document.createElement('img');
+
+    image.src = reader.result;
+    image.id = "previsualizar";
+
+    preview.innerHTML = '';
+    preview.append(image);
+  };
+  var cajaBotones = document.getElementById("botones");
+     if (cajaBotones.getElementsByTagName('input').length == 0){
+        cajaBotones.insertAdjacentHTML("beforeend",'<input type="submit" class="boton" value="Aceptar"><input type="button" value="Cancelar" class="boton" onclick="cancelar();">');
+  }
+  document.getElementById("texto_imagen").innerHTML = "Elegir Otra";
+}
+
+  function cancelar(){
+    document.getElementById("cajaImagen").innerHTML = "";
+  }
+
+function editar(){
+  var cajaBotones = document.getElementById("editor");
+     if (cajaBotones.getElementsByTagName('input').length == 0){
+        cajaBotones.insertAdjacentHTML("beforeend", `<article class="article" style="padding-left: 10px;"><h3>Editor</h3></article><form method="POST" id="Formulario" action="/update/<%= data.id %>/recetas"><h1>Caracteristicas</h1><div class="contenedor" id="cajaEditor"><input type="hidden" name="id" value="<%= data.id %>"><div class="Ingreso"><input type="text" id="nombre" value="<%= data.nombre %>" name="nombre" maxlength="32" class="input" placeholder="Nombre" required=""> </div><div class="Ingreso"><input type="text" id="desc" name="descripcion" value="<%= data.descripcion %>" class="input" placeholder="Descripcion" rows="2" maxlength="128" required=""></div><div class="Ingreso"><input type="text" id="dura" name="duracion" size="16" value="<%= data.duracion %>" class="input" placeholder="Duracion" required=""></div><div class="Ingreso"><input type="text" id="link" name="link" size="16" value="<%= data.link %>" class="input2" placeholder="Link de Youtube (opcional)"> </div><div class="Ingreso" id="ingrClase"><input type="button" value="+" id="bIngr" onclick="sumar('ingr','Ingrediente')" class="Mas" ><input type="button" value="-" onclick="borrar('ingr')" class="Mas" ><br/>
+          <% for (let n = 0; n < sepIngr.length; n++) { %>
+            <input type="text" id="ingr<%= n %>" name="ingrediente" value="<%= sepIngr[n] %>" size="160" class="input2" placeholder="Ingredientes" required="">
+            <% } %>
+            </div>
+            <div class="Ingreso" id="procClase"><input type="button" value="+" onclick="sumar('proc','Proceso')" class="Mas" ><input type="button" value="-" onclick="borrar('proc')" class="Mas" >
+            <br/>
+            <% for (let n = 0; n < sepIngr.length; n++) { %>
+              <input type="text" id="proc<%= n %>" name="proceso" value="<%= sepProc[n] %>" size="640" class="input2" placeholder="Proceso" required="">
+              <% } %>
+              </div><br><br>
+              <input type="button" value="Subir" onclick="subir()" class="Boton" ><br/></div></div></form>`);
+        }
+    }
+
+  function sumar(id, tipo){
+        var lista = document.getElementById(id + "Clase");
+        i = lista.getElementsByTagName('input').length;
+        lista.insertAdjacentHTML("beforeend",'<input type="text" id="'+ id + (i - 2) +'" name="'+ id + (i - 2) +'" size="640" class="input2" placeholder="'+ tipo + ' ' + (i - 1) +'" required="">');
+    }
+
+    function borrar(id){
+        var lista = document.getElementById(id + "Clase");
+        i = lista.getElementsByTagName('input').length;
+        if(i > 3){
+        input = document.getElementById(id + (i - 3));
+        padre = input.parentNode;
+        padre.removeChild(input);
+      }
+      else
+        document.getElementById(id + "0").value = "";
+    }
+
+    function subir(){
+      tipo = ["ingr","proc"]
+      for (var n = 0; n <= 1; n++){
+        var lista = document.getElementById(tipo[n] + "Clase");
+        largo = lista.getElementsByTagName('input').length;
+        ingrediente = document.getElementById(tipo[n] + "0").value;
+        for (var i = 1; i <= (largo - 3); i++) {
+          if(document.getElementById(tipo[n] + i).value != ""){
+          ingrediente = ingrediente + "_-_" + document.getElementById(tipo[n] + i).value;
+          }
+        }
+        for (var i = 1; i <= (largo - 3); i++) {
+          input = document.getElementById(tipo[n] + i);
+            padre = input.parentNode;
+            padre.removeChild(input);
+        }
+        document.getElementById(tipo[n] + "0").value = ingrediente;
+      }
+            
+      document.forms["Formulario"].submit()
+  }
+</script>
+ </body>
+</html>

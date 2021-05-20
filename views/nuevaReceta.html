@@ -2,7 +2,7 @@
 <head>
 <meta charset="utf-8" /> 
 <title>Nueva Receta</title>
-<link rel="stylesheet" type="text/css" href="Css/EstiloSubir.css">
+<link rel="stylesheet" type="text/css" href="EstiloSubir.css">
 </head>	
 <body>
 	<header class="header">
@@ -11,14 +11,14 @@
 			<span class="icon-menu"></span>
 			<nav class="nav">
 			<ul class="menu">
-				<li class="menu__item"><a class="menu__link" href="index.php">Cancelar</a></li>
+				<li class="menu__item"><a class="menu__link" href="/">Cancelar</a></li>
 			</ul>
 			</nav>
 		</div>
 </header>
 
 <div id="gran_contenedor">
-<form method="POST" id="Formulario" action="subirReceta.php" enctype="multipart/form-data">
+<form method="POST" id="Formulario" action="/add/recetas">
 
 <h1>Caracteristicas</h1>
 	<div class="contenedor">
@@ -26,10 +26,10 @@
 			<input type="text" id="nombre" name="nombre" maxlength="32" class="input" placeholder="Nombre" required="">
 		</div>
 		<div class="Ingreso">
-			<textarea type="text" id="desc" name="desc" class="input" placeholder="Descripcion" rows="2" maxlength="128" required=""></textarea>
+			<textarea type="text" id="desc" name="descripcion" class="input" placeholder="Descripcion" rows="2" maxlength="128" required=""></textarea>
 		</div>
 		<div class="Ingreso">
-			<input type="text" id="dura" name="dura" size="48" class="input" placeholder="Duracion" required="">
+			<input type="text" id="dura" name="duracion" size="48" class="input" placeholder="Duracion" required="">
 		</div>
         <div class="Ingreso">
             <input type="text" id="link" name="link" size="" class="input2" placeholder="Link de Youtube (opcional)">
@@ -37,12 +37,12 @@
 		<div class="Ingreso" id="ingrClase">
 			<input type="button" value="+" id="bIngr" onclick="sumar('ingr','Ingrediente')" class="Mas" >
 			<input type="button" value="-" onclick="borrar('ingr')" class="Mas" ><br/>
-			<input type="text" id="ingr0" name="ingr" size="160" class="input2" placeholder="Ingredientes" required="">
+			<input type="text" id="ingr0" name="ingrediente" size="160" class="input2" placeholder="Ingredientes" required="">
 		</div>
 			<div class="Ingreso" id="procClase">
 			<input type="button" value="+" onclick="sumar('proc','Proceso')" class="Mas" >
 			<input type="button" value="-" onclick="borrar('proc')" class="Mas" ><br/>
-			<input type="text" id="proc0" name="proc" size="640" class="input2" placeholder="Proceso" required="">
+			<input type="text" id="proc0" name="proceso" size="640" class="input2" placeholder="Proceso" required="">
 		</div>
 		<br>
 		<br>
@@ -52,11 +52,11 @@
 </div>
 <script type="text/javascript">
 
-    const listar = id => {
-        let lista = document.getElementById(id + "Clase");
-        let i = lista.getElementsByTagName('input').length;
-        return i;
-    }
+    const listar = (id) => {
+    let lista = document.getElementById(id + "Clase");
+    let i = lista.getElementsByTagName("input").length;
+    return i;
+};
 
 	function sumar(id, tipo){
         let lista = document.getElementById(id + "Clase");
@@ -64,35 +64,35 @@
         lista.insertAdjacentHTML("beforeend",'<input type="text" id="'+ id + (i - 2) +'" name="'+ id + (i - 2) +'" size="640" class="input2" placeholder="'+ tipo + ' ' + (i - 1) +'" required="">');
     }
 
-     function borrar(id){
-        let i = listar(id);
-        if (i > 3){
+     function borrar(id) {
+    let i = listar(id);
+    if (i > 3) {
         let input = document.getElementById(id + (i - 3));
         let padre = input.parentNode;
         padre.removeChild(input);
-        }
-        else document.getElementById(id + "0").value = null;
-    }
+    } else document.getElementById(id + "0").value = null;
+}
 
-    function subir(){
-    	tipo = ["ingr","proc"]
-    	for (let n = 0; n <= 1; n++){
-    		let largo = listar(tipo[n]);
-        	ingrediente = document.getElementById(tipo[n] + "0").value;
-    		for (let i = 1; i <= (largo - 3); i++) {
-    			if(document.getElementById(tipo[n] + i).value != ""){
-    			ingrediente += "_-_" + document.getElementById(tipo[n] + i).value;
-    			}
-    		}
-    		for (let i = 1; i <= (largo - 3); i++) {
-    			let input = document.getElementById(tipo[n] + i);
-        		let padre = input.parentNode;
-        		padre.removeChild(input);
-    		}
-    		document.getElementById(tipo[n] + "0").value = ingrediente;
-    	}
-    	document.forms["Formulario"].submit()
-	}
+function subir() {
+    tipo = ["ingr", "proc"];
+    for (let n = 0; n <= 1; n++) {
+        let largo = listar(tipo[n]);
+        ingrediente = document.getElementById(tipo[n] + "0").value;
+        for (let i = 1; i <= largo - 3; i++) {
+            if (document.getElementById(tipo[n] + i).value != "") {
+                ingrediente +=
+                    "_-_" + document.getElementById(tipo[n] + i).value;
+            }
+        }
+        for (let i = 1; i <= largo - 3; i++) {
+            let input = document.getElementById(tipo[n] + i);
+            let padre = input.parentNode;
+            padre.removeChild(input);
+        }
+        document.getElementById(tipo[n] + "0").value = ingrediente;
+    }
+    document.forms["Formulario"].submit();
+}
 </script>
 </body>	
 </html>

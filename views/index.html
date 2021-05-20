@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+ 	<title>RecetaNow</title>
+ 	<meta name="Description" content="Mi contenedor personal de recetas">
+ 	<meta name="viewport" content="width=device-width, initial-scale=1">
+ 	<link rel="stylesheet" href="Estilo.css" media="all"/>
+	<link href="https://fonts.googleapis.com/css2?family=Raleway:wght@500&display=swap" rel="stylesheet">
+</head>
+<body>
+	<header class="header">
+  <h1 class="titulo">RecetasNow</h1>
+    <div class="cabeza">  
+      <span class="icon-menu"></span>
+      <nav class="nav" id="nav-1">
+      <ul class="menu">
+        <li class="menu__item"><a class="menu__link" href="/nuevaReceta">Nueva Receta</a></li>
+      </ul>
+      </nav>
+    </div>
+</header>
+<article class="article">
+ 	<h3 style="text-align: center;">Mi contenedor personal de recetas</h3>
+</article>
+ <div class="contenedor">
+<%
+for(let i = 0; i < data.length; i++){
+%>
+      <div class="receta">
+       <a class="recetaLink" href="/verReceta<%= data[i].id %>">
+        <span class="recetaContenido">
+          <div class="contenedorFoto">
+          	<% 
+			contieneFoto = false;
+			for (let n = 0; n < dataFoto.length; n++){
+			if (dataFoto[n].idReceta == data[i].id) {
+			contieneFoto = true; 
+			%>
+			<img class="fotoReceta" src="<%= dataFoto[n].direccion %>" alt="Receta">
+			<% 
+			break;
+			}
+			}
+			if(contieneFoto == false){
+			%> 
+			<img class="fotoReceta" src="predefinida.png" alt="Receta">
+			<% } %>
+          </div>
+        	<div class="contenedorCont">
+         		<h1><%= data[i].nombre %></h1>
+         		<p class="recetaLink" style="text-align: left;"><%= data[i].descripcion %></p>
+         		<p class="dura"><%= data[i].duracion %></p>
+         	</div>
+      	</span>
+    	</a>
+      	</div>
+<%
+}
+%>
+</div>
+</body>
+</html>
