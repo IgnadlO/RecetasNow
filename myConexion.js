@@ -4,7 +4,7 @@ const conexion = {
 	host: 'localhost',
 	database: 'recetasnow',
 	user: 'root',
-	password: 'Tallern4'
+	password: 'Peron'
 };
 
 const pool = mysql.createPool(conexion);
